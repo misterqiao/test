@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <script src="./node_modules/vue-router/dist/vue-router.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <p>
+            <router-link to="/user/foo">/user/foo</router-link>
+            <router-link to="/user/bar">/user/bar</router-link>
+        </p>
+        <router-view></router-view>
+    </div>
+    <script>
+        const User = {
+            template: '<div>用户的id为{{$route.params.id }}</div>',
+            beforeRouteEnter(to, from, next) {
+                console.log("这是beforeRouteEnter阶段--------02")
+                next()
+            },
+            beforeRouteUpdate(to, from, next) {
+                console.log("这是beforeRouteUpdate阶段--------02")
+                next()
+            },
+            beforeRouteLeave(to, from, next) {
+                console.log("这是beforeRouteLeave阶段--------05")
+                next()
+            }
+        }
+        const router = new VueRouter({
+            routes: [
+                {
+                    path: '/user/:id',
+                    component: User,
+                    beforeEnte:(to, from, next)=>{
+                        console.log("这是beforeEnter阶段")
+                        next()
+                    }
+                }
+            ]
+        })
+        router.beforeEach((to, from, next) => {
+            console.log("这是beforeEach阶段---------01")
+            next()
+        })
+        router.beforeResolve((to, from, next) => {
+            console.log("这是beforeResolve阶段-------03")
+            next()
+        })
+        router.afterEach((to, from) => {
+            console.log("这是afterEach阶段-------04")
+        })
+        let vm = new Vue({
+            el:"#app",
+            router
+        })
+    </script>
+
+
+</body>
+
+</html>
